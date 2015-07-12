@@ -22,6 +22,27 @@ class Game
     ]
   end
 
+  def play!
+    @playing = true
+
+    Thread.new {
+      while true
+        dir = board.read_command
+        next unless direction_allowed?(dir)
+        @direction = dir
+      end
+    }
+
+    while @playing
+      update_state
+      died?
+      game_interval!
+      board.print_world(game_state)
+    end
+  end
+
+  private
+
   def move_position(position)
     row, col = position
     case @direction
@@ -52,30 +73,33 @@ class Game
     _, position = @game_state.last
     row, col = position
 
-    @playing = false if (row < 2 || row > board.rows - 2)
-    @playing = false if (col < 2 || col > board.cols - 2)
+    if across_rows_limit?(row)||
+      across_cols_limit?(col)
+      @playing = false
+    end
   end
 
   def game_interval!
-    sleep(0.2) if [RIGHT, LEFT].include?(direction)
-    sleep(0.25) if [UP, DOWN].include?(direction)
+    sleep(0.1) if [RIGHT, LEFT].include?(direction)
+    sleep(0.13) if [UP, DOWN].include?(direction)
   end
 
-  def play!
-    @playing = true
-
-    Thread.new {
-      while true
-        @direction = board.read_command
-      end
-    }
-
-    while @playing
-      update_state
-      died?
-      game_interval!
-      board.print_world(game_state)
+  def direction_allowed?(dir)
+    allowed = case @direction
+    when UP, DOWN
+      [LEFT, RIGHT]
+    when LEFT, RIGHT
+      [UP, DOWN]
     end
+    allowed.include?(dir)
+  end
+
+  def across_rows_limit?(row)
+    (row < 2 || row > board.rows - 1)
+  end
+
+  def across_cols_limit?(col)
+    (col < 2 || col > board.cols - 1)
   end
 end
 
