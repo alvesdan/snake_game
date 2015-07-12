@@ -1,4 +1,4 @@
-require './board'
+require_relative 'board'
 
 class Game
   UP = 0
@@ -102,5 +102,3 @@ class Game
     (col < 2 || col > board.cols - 1)
   end
 end
-
-Game.new.play!

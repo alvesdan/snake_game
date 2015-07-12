@@ -1,6 +1,6 @@
 require 'io/console'
 require 'colorize'
-require './command'
+require_relative 'command'
 
 class Board
   include Command
