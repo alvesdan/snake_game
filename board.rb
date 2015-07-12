@@ -1,4 +1,5 @@
 require 'io/console'
+require 'colorize'
 require './command'
 
 class Board
@@ -14,7 +15,8 @@ class Board
 
     game_state.each do |state|
       index, pos = state
-      print_snake(index, pos)
+      head = (index == game_state.length - 1)
+      print_snake(pos, head: head)
     end
 
     move_cursor(rows, cols)
@@ -42,9 +44,10 @@ class Board
     (0..cols).each { |i| move_cursor(cols, i) and write("=") }
   end
 
-  def print_snake(index, position)
+  def print_snake(position, head: false)
     row, col = position
     move_cursor(row, col)
-    write("*")
+    text = head ? '#'.yellow : '#'
+    write(text)
   end
 end
