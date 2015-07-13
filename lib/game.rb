@@ -30,7 +30,7 @@ class Game
     @playing = true
 
     Thread.new {
-      while true
+      loop do
         dir = board.read_command
         next unless direction_allowed?(dir)
         @direction = dir
