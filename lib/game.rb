@@ -6,10 +6,14 @@ class Game
   DOWN = 2
   LEFT = 3
 
-  attr_reader :board, :game_state, :direction
+  attr_reader :board, :game_state, :direction, :apple, :points, :speed
   def initialize
     @board = Board.new
     @direction = 1
+    @apple = [board.height - 4, board.width - 4]
+    @points = 0
+    @speed = 0
+    @counter = 1
     @game_state = [
       [0, [2, 2]],
       [1, [2, 3]],
@@ -34,14 +38,46 @@ class Game
     }
 
     while @playing
+      if cacthed_apple?
+        @points += 1 * @counter
+        @counter += 1
+        @speed += 0.0005
+        grow_snake
+        @apple = create_apple
+      end
+
       update_state
       died?
       game_interval!
-      board.print_world(game_state)
+      board.print_world(self)
     end
   end
 
   private
+
+  def create_apple
+    begin
+      apple = [rand(board.height - 4) + 2, rand(board.width - 4) + 2]
+    end while used_positions.include?(apple)
+    apple
+  end
+
+  def grow_snake
+    state = game_state.last
+    index, pos = state
+    moved = move_position(pos)
+    @game_state.concat([[index + 1, moved]])
+  end
+
+  def cacthed_apple?
+    used_positions.include?(@apple)
+  end
+
+  def used_positions
+    game_state.map do |state|
+      state.last
+    end
+  end
 
   def move_position(position)
     row, col = position
@@ -80,8 +116,8 @@ class Game
   end
 
   def game_interval!
-    sleep(0.1) if [RIGHT, LEFT].include?(direction)
-    sleep(0.13) if [UP, DOWN].include?(direction)
+    sleep(0.1 - @speed) if [RIGHT, LEFT].include?(direction)
+    sleep(0.12 - @speed) if [UP, DOWN].include?(direction)
   end
 
   def direction_allowed?(dir)
@@ -95,10 +131,10 @@ class Game
   end
 
   def across_rows_limit?(row)
-    (row < 2 || row > board.rows - 1)
+    (row < 2 || row > board.height - 1)
   end
 
   def across_cols_limit?(col)
-    (col < 2 || col > board.cols - 1)
+    (col < 2 || col > board.width - 1)
   end
 end

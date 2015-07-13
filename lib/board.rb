@@ -5,17 +5,22 @@ require_relative 'command'
 class Board
   include Command
 
-  attr_reader :rows, :cols
+  attr_reader :rows, :cols, :height, :width
   def initialize
     @rows, @cols = STDOUT.winsize
+    @height = @rows - 2
+    @width = @cols
   end
 
-  def print_world(game_state)
-    clear_world! and draw_board!
+  def print_world(game)
+    clear_world! and
+      draw_board! and
+      draw_apple!(game.apple) and
+      draw_stats!(game.speed, game.points)
 
-    game_state.each do |state|
+    game.game_state.each do |state|
       index, pos = state
-      head = (index == game_state.length - 1)
+      head = (index == game.game_state.length - 1)
       print_snake(pos, head: head)
     end
 
@@ -37,11 +42,23 @@ class Board
     STDOUT.write(text)
   end
 
+  def draw_stats!(speed, points)
+    move_cursor(rows, 0)
+    write("SPEED: #{speed}  ")
+    write("POINTS: #{points}")
+  end
+
+  def draw_apple!(apple)
+    row, col = apple
+    move_cursor(row, col)
+    write("*")
+  end
+
   def draw_board!
-    (0..cols).each { |i| move_cursor(i, 0) and write("|") }
-    (0..cols).each { |i| move_cursor(i, cols) and write("|") }
+    (0..height).each { |i| move_cursor(i, 0) and write("|") }
+    (0..height).each { |i| move_cursor(i, cols) and write("|") }
     (0..cols).each { |i| move_cursor(0, i) and write("=") }
-    (0..cols).each { |i| move_cursor(cols, i) and write("=") }
+    (0..cols).each { |i| move_cursor(height, i) and write("=") }
   end
 
   def print_snake(position, head: false)
