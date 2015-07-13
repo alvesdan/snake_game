@@ -38,14 +38,7 @@ class Game
     }
 
     while @playing
-      if cacthed_apple?
-        @points += 1 * @counter
-        @counter += 1
-        @speed += 0.0005
-        grow_snake
-        @apple = create_apple
-      end
-
+      eat_apple?
       update_state
       died?
       game_interval!
@@ -69,8 +62,14 @@ class Game
     @game_state.concat([[index + 1, moved]])
   end
 
-  def cacthed_apple?
-    used_positions.include?(@apple)
+  def eat_apple?
+    if used_positions.include?(@apple)
+      @points += 1 * @counter
+      @counter += 1
+      @speed += 0.0005
+      grow_snake
+      @apple = create_apple
+    end
   end
 
   def used_positions
