@@ -116,8 +116,7 @@ class Game
   end
 
   def game_interval!
-    sleep(0.1 - @speed) if [RIGHT, LEFT].include?(direction)
-    sleep(0.12 - @speed) if [UP, DOWN].include?(direction)
+    sleep(0.1 - @speed)
   end
 
   def direction_allowed?(dir)
