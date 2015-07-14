@@ -12,15 +12,15 @@ class Board
     @width = @cols
   end
 
-  def print_world(game)
+  def print_world!(game)
     clear_world! and
       draw_board! and
       draw_apple!(game.apple) and
       draw_stats!(game.speed, game.points)
 
-    game.game_state.each do |state|
+    game.snake.state.each do |state|
       index, pos = state
-      head = (index == game.game_state.length - 1)
+      head = (index == game.snake.state.length - 1)
       print_snake(pos, head: head)
     end
 
@@ -44,12 +44,11 @@ class Board
 
   def draw_stats!(speed, points)
     move_cursor(rows, 0)
-    write("SPEED: #{speed}  ")
-    write("POINTS: #{points}")
+    write("SPEED: #{speed} / POINTS: #{points}")
   end
 
   def draw_apple!(apple)
-    row, col = apple
+    row, col = apple.position
     move_cursor(row, col)
     write("*")
   end
