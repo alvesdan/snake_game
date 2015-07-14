@@ -29,7 +29,7 @@ class Game
   def play!
     @playing = true
 
-    Thread.new {
+    keyboard = Thread.new {
       loop do
         dir = board.read_command
         next unless direction_allowed?(dir)
@@ -44,6 +44,8 @@ class Game
       game_interval!
       board.print_world(self)
     end
+
+    Thread.kill(keyboard)
   end
 
   private
