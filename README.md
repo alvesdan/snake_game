@@ -18,7 +18,7 @@ bundle install
 - [ ] Detect snake colision with self
 - [ ] Improve direction change (sometimes it feels laggy)
 
-#### Contribution
+#### Contributing
 Feel free to contribute. I would appreciate it :)
 
 #### License
