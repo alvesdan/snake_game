@@ -1,4 +1,4 @@
-![Terminal](http://f.cl.ly/items/2E3g2I231Y3S0P0k2a0b/Snake.png)
+![Terminal](http://f.cl.ly/items/2D2Y2e1E3M2N2g2H0s30/Snake.png)
 # Snake Game
 
 #### Install
