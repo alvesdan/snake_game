@@ -21,7 +21,7 @@ class Board
     game.snake.state.each do |state|
       index, pos = state
       head = (index == game.snake.state.length - 1)
-      print_snake(pos, head: head)
+      print_snake(game.direction, pos, head: head)
     end
 
     move_cursor(rows, cols)
@@ -50,20 +50,42 @@ class Board
   def draw_apple!(apple)
     row, col = apple.position
     move_cursor(row, col)
-    write("*")
+    write("❤")
   end
 
   def draw_board!
-    (0..height).each { |i| move_cursor(i, 0) and write("|") }
-    (0..height).each { |i| move_cursor(i, cols) and write("|") }
-    (0..cols).each { |i| move_cursor(0, i) and write("=") }
-    (0..cols).each { |i| move_cursor(height, i) and write("=") }
+    # Left and right border
+    (0..height).each do |i|
+      move_cursor(i, 0) and write("│")
+      move_cursor(i, cols) and write("│")
+    end
+
+    # Top and bottom border
+    (0..cols).each do |i|
+      move_cursor(0, i) and write("─")
+      move_cursor(height, i) and write("─")
+    end
+
+    # Corners
+    move_cursor(0, 0) and write("┌")
+    move_cursor(0, cols) and write("┐")
+    move_cursor(height, 0) and write("└")
+    move_cursor(height, cols) and write("┘")
   end
 
-  def print_snake(position, head: false)
+  def snake_head(position)
+    case position
+    when UP then '∩'
+    when RIGHT then '⊃'
+    when DOWN then '∪'
+    when LEFT then '⊂'
+    end
+  end
+
+  def print_snake(direction, position, head: false)
     row, col = position
     move_cursor(row, col)
-    text = head ? '#'.yellow : '#'
+    text = head ? snake_head(direction) : '◆'
     write(text)
   end
 end
