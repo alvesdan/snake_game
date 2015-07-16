@@ -2,6 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     colorize (0.7.7)
+    curses (1.0.1)
     io (0.0.1)
 
 PLATFORMS
@@ -9,4 +10,8 @@ PLATFORMS
 
 DEPENDENCIES
   colorize
+  curses
   io
+
+BUNDLED WITH
+   1.10.5

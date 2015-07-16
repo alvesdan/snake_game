@@ -1,4 +1,5 @@
 require 'io/console'
+require 'curses'
 require 'colorize'
 require_relative 'command'
 
@@ -11,6 +12,9 @@ module SnakeGame
       @rows, @cols = STDOUT.winsize
       @height = @rows - 2
       @width = @cols
+
+      Curses.noecho
+      Curses.stdscr.keypad(true)
     end
 
     def print_world!(game)
