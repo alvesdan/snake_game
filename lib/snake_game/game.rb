@@ -9,7 +9,9 @@ module SnakeGame
   LEFT = 3
 
   class Game
-    attr_reader :board, :snake, :direction, :apple, :points, :speed
+    attr_reader :board, :snake, :direction, :apple,
+      :points, :speed, :counter
+
     def initialize
       @direction = RIGHT
       @board = Board.new

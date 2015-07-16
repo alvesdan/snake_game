@@ -17,7 +17,7 @@ module SnakeGame
       clear_world! and
         draw_board! and
         draw_apple!(game.apple) and
-        draw_stats!(game.speed, game.points)
+        draw_stats!(game.counter, game.points)
 
       game.snake.state.each do |state|
         index, pos = state
@@ -45,7 +45,7 @@ module SnakeGame
 
     def draw_stats!(speed, points)
       move_cursor(rows, 0)
-      write("SPEED: #{speed} / POINTS: #{points}")
+      write("SPEED: #{speed + 1} │ POINTS: #{points}")
     end
 
     def draw_apple!(apple)
