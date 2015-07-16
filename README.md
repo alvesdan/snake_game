@@ -5,7 +5,7 @@
 ```shell
 git clone
 bundle install
-./bin/snake # or ruby snake.rb
+./bin/snake_game # or ruby lib/snake_game.rb
 ```
 
 #### Roadmap
